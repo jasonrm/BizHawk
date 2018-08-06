@@ -38,8 +38,8 @@
             this.ModuleName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ModulePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.InputBox = new System.Windows.Forms.TextBox();
+            this.OutputBox = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pythonConsoleMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -94,7 +94,7 @@
             this.pythonToolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.pythonToolStrip.Location = new System.Drawing.Point(0, 33);
             this.pythonToolStrip.Name = "pythonToolStrip";
-            this.pythonToolStrip.Size = new System.Drawing.Size(876, 28);
+            this.pythonToolStrip.Size = new System.Drawing.Size(876, 25);
             this.pythonToolStrip.TabIndex = 1;
             this.pythonToolStrip.Text = "toolStripEx1";
             // 
@@ -135,8 +135,8 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.richTextBox1);
+            this.groupBox1.Controls.Add(this.InputBox);
+            this.groupBox1.Controls.Add(this.OutputBox);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(558, 455);
@@ -144,26 +144,29 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Output";
             // 
-            // textBox1
+            // InputBox
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.InputBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(6, 423);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(546, 26);
-            this.textBox1.TabIndex = 1;
+            this.InputBox.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InputBox.Location = new System.Drawing.Point(6, 424);
+            this.InputBox.Name = "InputBox";
+            this.InputBox.Size = new System.Drawing.Size(546, 31);
+            this.InputBox.TabIndex = 1;
+            this.InputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
             // 
-            // richTextBox1
+            // OutputBox
             // 
-            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.OutputBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.richTextBox1.Location = new System.Drawing.Point(6, 25);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(546, 392);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.OutputBox.BackColor = System.Drawing.SystemColors.Control;
+            this.OutputBox.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputBox.Location = new System.Drawing.Point(6, 25);
+            this.OutputBox.Name = "OutputBox";
+            this.OutputBox.Size = new System.Drawing.Size(546, 393);
+            this.OutputBox.TabIndex = 0;
+            this.OutputBox.Text = "";
             // 
             // splitContainer1
             // 
@@ -220,8 +223,8 @@
 		private System.Windows.Forms.ColumnHeader ModuleName;
 		private System.Windows.Forms.ColumnHeader ModulePath;
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.RichTextBox OutputBox;
+		private System.Windows.Forms.TextBox InputBox;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 	}
 }

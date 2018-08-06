@@ -88,6 +88,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="Python.Runtime">
+      <HintPath>..\output\dll\Python.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="SlimDX">
       <HintPath>..\References\x64\SlimDX.dll</HintPath>
     </Reference>
@@ -1088,6 +1091,7 @@
     <Compile Include="tools\PCE\PCETileViewer.Designer.cs">
       <DependentUpon>PCETileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="tools\Python\PythonBridge.cs" />
     <Compile Include="tools\Python\PythonConsole.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1898,6 +1902,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\ControllerImages\GENController.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\Python\bizhawk\bridge.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\Python\bizhawk\client.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\Python\bizhawk\gui.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\Python\bizhawk\__init__.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MoveTop.png" />
