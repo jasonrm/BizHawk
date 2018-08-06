@@ -953,6 +953,29 @@ namespace BizHawk.Client.EmuHawk
 				return newTool;
 			}
 		}
+		public PythonConsole PythonConsole
+		{
+			get
+			{
+				var tool = _tools.FirstOrDefault(t => t is PythonConsole);
+				if (tool != null)
+				{
+					if (tool.IsDisposed)
+					{
+						_tools.Remove(tool);
+					}
+					else
+					{
+						return tool as PythonConsole;
+					}
+				}
+
+				var newTool = new PythonConsole();
+				_tools.Add(newTool);
+				return newTool;
+			}
+		}
+
 
 		public TAStudio TAStudio
 		{

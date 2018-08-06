@@ -1486,6 +1486,11 @@ namespace BizHawk.Client.EmuHawk
 			OpenLuaConsole();
 		}
 
+		private void PythonConsoleMenuItem_Click(object sender, EventArgs e)
+		{
+			OpenPythonConsole();
+		}
+
 		private void TAStudioMenuItem_Click(object sender, EventArgs e)
 		{
 			if (!Emulator.CanPollInput())

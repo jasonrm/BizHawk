@@ -2079,6 +2079,7 @@
             this.RamWatchMenuItem,
             this.RamSearchMenuItem,
             this.LuaConsoleMenuItem,
+            this.PythonConsoleMenuItem,
             this.TAStudioMenuItem,
             this.HexEditorMenuItem,
             this.TraceLoggerMenuItem,
@@ -4287,6 +4288,14 @@
 			this.timerMouseIdle.Interval = 2000;
 			this.timerMouseIdle.Tick += new System.EventHandler(this.TimerMouseIdle_Tick);
 			// 
+            //
+            // PythonConsoleMenuItem
+            // 
+            this.PythonConsoleMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Lua;
+            this.PythonConsoleMenuItem.Name = "PythonConsoleMenuItem";
+            this.PythonConsoleMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.PythonConsoleMenuItem.Text = "Python Console";
+            this.PythonConsoleMenuItem.Click += new System.EventHandler(this.PythonConsoleMenuItem_Click);
 			// MainForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -4781,5 +4790,6 @@
     private System.Windows.Forms.ToolStripMenuItem AmstradCPCNonSyncSettingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem SubNesHawkMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator38;
+        private System.Windows.Forms.ToolStripMenuItem PythonConsoleMenuItem;
 	}
 }

@@ -1128,6 +1128,11 @@ namespace BizHawk.Client.EmuHawk
 			GlobalWin.Tools.Load<LuaConsole>();
 		}
 
+		private void OpenPythonConsole()
+		{
+			GlobalWin.Tools.Load<PythonConsole>();
+		}
+
 		public void NotifyLogWindowClosing()
 		{
 			DisplayLogWindowMenuItem.Checked = false;
