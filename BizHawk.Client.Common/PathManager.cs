@@ -188,6 +188,10 @@ namespace BizHawk.Client.Common
 		{
 			return MakeAbsolutePath(Global.Config.PathEntries.LuaPathFragment, null);
 		}
+		public static string GetPythonPath()
+		{
+			return MakeAbsolutePath(Global.Config.PathEntries.PythonPathFragment, null);
+		}
 
 		// Decides if a path is non-empty, not . and not .\
 		private static bool PathIsSet(string path)
