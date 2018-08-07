@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Python.Runtime;
+using System.IO;
+using BizHawk.Client.Common;
+using BizHawk.Client.EmuHawk.WinFormExtensions;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -21,6 +24,8 @@ namespace BizHawk.Client.EmuHawk
 		private IVideoProvider VideoProvider { get; set; }
 
 		private dynamic pyBridge;
+
+		private dynamic pyEvents;
 
 		private readonly List<string> _consoleCommandHistory = new List<string>();
 		private int _consoleCommandHistoryIndex = -1;
@@ -42,10 +47,16 @@ namespace BizHawk.Client.EmuHawk
 			using (Py.GIL())
 			{
 				dynamic sys = Py.Import("sys");
+				// Location of bizhawk.* python modules
 				sys.path.append(new PyString(baseDirectory + @"tools\Python"));
+
+				// Location of any user-created python modules
+				sys.path.append(new PyString(PathManager.GetPythonPath()));
 
 				pyBridge = Py.Import("bizhawk.bridge");
 				pyBridge.wire_console();
+
+				pyEvents = Py.Import("bizhawk.events");
 			}
 		}
 
@@ -58,18 +69,22 @@ namespace BizHawk.Client.EmuHawk
 
 		public void FastUpdate()
 		{
+			pyEvents.on_fast_update.fire();
 		}
 
 		public void NewUpdate(ToolFormUpdateType type)
 		{
+			pyEvents.on_update.fire(type);
 		}
 
 		public void Restart()
 		{
+			pyEvents.on_restart.fire();
 		}
 
 		public void UpdateValues()
 		{
+			pyEvents.on_update_values.fire();
 		}
 
 		private void ConsoleLog(PyString message)
@@ -144,6 +159,34 @@ namespace BizHawk.Client.EmuHawk
 				e.Handled = true;
 			}
 
+		}
+
+		private static FileInfo GetFileFromUser(string filter)
+		{
+			var ofd = new OpenFileDialog
+			{
+				InitialDirectory = PathManager.GetPythonPath(),
+				Filter = filter,
+				RestoreDirectory = true
+			};
+
+			if (!Directory.Exists(ofd.InitialDirectory))
+			{
+				Directory.CreateDirectory(ofd.InitialDirectory);
+			}
+
+			var result = ofd.ShowHawkDialog();
+			return result == DialogResult.OK ? new FileInfo(ofd.FileName) : null;
+		}
+
+		private void openScriptToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var file = GetFileFromUser("Python Scripts (*.py)|*.py");
+			if (file != null)
+			{
+				//LoadPythonFile(file.FullName);
+				//UpdateDialog();
+			}
 		}
 	}
 }

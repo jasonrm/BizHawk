@@ -1910,6 +1910,9 @@
     <Content Include="tools\Python\bizhawk\client.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="tools\Python\bizhawk\events.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="tools\Python\bizhawk\gui.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
