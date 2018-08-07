@@ -23,6 +23,8 @@ namespace BizHawk.Client.EmuHawk
 		[RequiredService]
 		private IVideoProvider VideoProvider { get; set; }
 
+		private PythonFiles pythonFiles = new PythonFiles();
+
 		private dynamic pyBridge;
 
 		private dynamic pyEvents;
@@ -58,6 +60,35 @@ namespace BizHawk.Client.EmuHawk
 
 				pyEvents = Py.Import("bizhawk.events");
 			}
+
+			PythonListView.QueryItemText += PythonListView_QueryItemText;
+			//PythonListView.QueryItemBkColor += PythonListView_QueryItemBkColor;
+			//PythonListView.QueryItemImage += PythonListView_QueryItemImage;
+			//PythonListView.QueryItemIndent += PythonListView_QueryItemIndent;
+			PythonListView.VirtualMode = true;
+
+		}
+
+		private void PythonListView_QueryItemText(int index, int column, out string text)
+		{
+			text = "";
+			if (column == 0)
+			{
+				text = Path.GetFileNameWithoutExtension(pythonFiles[index].Path); // TODO: how about allow the user to name scripts?
+			}
+			else if (column == 1)
+			{
+				text = DressUpRelative(pythonFiles[index].Path);
+			}
+		}
+		private string DressUpRelative(string path)
+		{
+			if (path.StartsWith(".\\"))
+			{
+				return path.Replace(".\\", "");
+			}
+
+			return path;
 		}
 
 		public bool UpdateBefore => false;
@@ -179,12 +210,80 @@ namespace BizHawk.Client.EmuHawk
 			return result == DialogResult.OK ? new FileInfo(ofd.FileName) : null;
 		}
 
+		private bool PythonAlreadyInSession(string path)
+		{
+			return pythonFiles.Any(t => path == t.Path);
+		}
+
+		public void LoadPythonFile(string path)
+		{
+			var processedPath = PathManager.TryMakeRelative(path);
+			string pathToLoad = ProcessPath(processedPath);
+
+			if (PythonAlreadyInSession(processedPath))
+			{
+				return;
+			}
+
+			var pythonFile = new PythonFile("", processedPath);
+
+			pythonFiles.Add(pythonFile);
+			PythonListView.ItemCount = pythonFiles.Count;
+			PythonListView.Refresh();
+			Global.Config.RecentLua.Add(processedPath);
+
+			pythonFile.State = PythonFile.RunState.Running;
+			EnablePythonFile(pythonFile);
+		}
+
+
+		private void EnablePythonFile(PythonFile item)
+		{
+			try
+			{
+				//LuaSandbox.Sandbox(null, () =>
+				//{
+				//	string pathToLoad = Path.IsPathRooted(item.Path)
+				//	? item.Path
+				//	: PathManager.MakeProgramRelativePath(item.Path);
+
+				//	item.Thread = LuaImp.SpawnCoroutine(pathToLoad);
+				//	LuaSandbox.CreateSandbox(item.Thread, Path.GetDirectoryName(pathToLoad));
+				//}, () =>
+				//{
+				//	item.State = LuaFile.RunState.Disabled;
+				//});
+
+				//// Shenanigans
+				//// We want any gui.text messages from a script to immediately update even when paused
+				//GlobalWin.OSD.ClearGUIText();
+				//GlobalWin.Tools.UpdateToolsAfter();
+				//LuaImp.EndLuaDrawing();
+				//LuaImp.StartLuaDrawing();
+			}
+			catch (IOException)
+			{
+				ConsoleLog("Unable to access file " + item.Path);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
+		}
+
+		private string ProcessPath(string path)
+		{
+			return Path.IsPathRooted(path)
+				? path
+				: PathManager.MakeProgramRelativePath(path);
+		}
+
 		private void openScriptToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var file = GetFileFromUser("Python Scripts (*.py)|*.py");
 			if (file != null)
 			{
-				//LoadPythonFile(file.FullName);
+				LoadPythonFile(file.FullName);
 				//UpdateDialog();
 			}
 		}

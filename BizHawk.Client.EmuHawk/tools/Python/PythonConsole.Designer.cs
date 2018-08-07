@@ -31,17 +31,17 @@
             this.pythonConsoleMenu = new MenuStripEx();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pythonToolStrip = new ToolStripEx();
-            this.PythonModulesListView = new BizHawk.Client.EmuHawk.VirtualListView();
+            this.PythonListView = new BizHawk.Client.EmuHawk.VirtualListView();
             this.ModuleName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ModulePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.InputBox = new System.Windows.Forms.TextBox();
             this.OutputBox = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pythonConsoleMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,6 +79,14 @@
             this.scriptToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
             this.scriptToolStripMenuItem.Text = "Script";
             // 
+            // openScriptToolStripMenuItem
+            // 
+            this.openScriptToolStripMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.OpenFile;
+            this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
+            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(190, 30);
+            this.openScriptToolStripMenuItem.Text = "Open Script";
+            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
@@ -101,27 +109,27 @@
             this.pythonToolStrip.TabIndex = 1;
             this.pythonToolStrip.Text = "toolStripEx1";
             // 
-            // PythonModulesListView
+            // PythonListView
             // 
-            this.PythonModulesListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.PythonListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PythonModulesListView.BlazingFast = false;
-            this.PythonModulesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.PythonListView.BlazingFast = false;
+            this.PythonListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ModuleName,
             this.ModulePath});
-            this.PythonModulesListView.FullRowSelect = true;
-            this.PythonModulesListView.GridLines = true;
-            this.PythonModulesListView.ItemCount = 0;
-            this.PythonModulesListView.Location = new System.Drawing.Point(3, 3);
-            this.PythonModulesListView.Name = "PythonModulesListView";
-            this.PythonModulesListView.SelectAllInProgress = false;
-            this.PythonModulesListView.selectedItem = -1;
-            this.PythonModulesListView.Size = new System.Drawing.Size(278, 455);
-            this.PythonModulesListView.TabIndex = 2;
-            this.PythonModulesListView.UseCompatibleStateImageBehavior = false;
-            this.PythonModulesListView.UseCustomBackground = true;
-            this.PythonModulesListView.View = System.Windows.Forms.View.Details;
+            this.PythonListView.FullRowSelect = true;
+            this.PythonListView.GridLines = true;
+            this.PythonListView.ItemCount = 0;
+            this.PythonListView.Location = new System.Drawing.Point(3, 3);
+            this.PythonListView.Name = "PythonListView";
+            this.PythonListView.SelectAllInProgress = false;
+            this.PythonListView.selectedItem = -1;
+            this.PythonListView.Size = new System.Drawing.Size(278, 455);
+            this.PythonListView.TabIndex = 2;
+            this.PythonListView.UseCompatibleStateImageBehavior = false;
+            this.PythonListView.UseCustomBackground = true;
+            this.PythonListView.View = System.Windows.Forms.View.Details;
             // 
             // ModuleName
             // 
@@ -181,7 +189,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.PythonModulesListView);
+            this.splitContainer1.Panel1.Controls.Add(this.PythonListView);
             // 
             // splitContainer1.Panel2
             // 
@@ -189,14 +197,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(852, 461);
             this.splitContainer1.SplitterDistance = 284;
             this.splitContainer1.TabIndex = 4;
-            // 
-            // openScriptToolStripMenuItem
-            // 
-            this.openScriptToolStripMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.OpenFile;
-            this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
-            this.openScriptToolStripMenuItem.Text = "Open Script";
-            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
             // 
             // PythonConsole
             // 
@@ -230,7 +230,7 @@
 		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private ToolStripEx pythonToolStrip;
-		private VirtualListView PythonModulesListView;
+		private VirtualListView PythonListView;
 		private System.Windows.Forms.ColumnHeader ModuleName;
 		private System.Windows.Forms.ColumnHeader ModulePath;
 		private System.Windows.Forms.GroupBox groupBox1;

@@ -1098,6 +1098,8 @@
     <Compile Include="tools\Python\PythonConsole.Designer.cs">
       <DependentUpon>PythonConsole.cs</DependentUpon>
     </Compile>
+    <Compile Include="tools\Python\PythonFile.cs" />
+    <Compile Include="tools\Python\PythonFiles.cs" />
     <Compile Include="tools\SMS\VDPViewer.cs">
       <SubType>Form</SubType>
     </Compile>
