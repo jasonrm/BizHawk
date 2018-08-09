@@ -460,7 +460,6 @@ namespace BizHawk.Client.EmuHawk
 			BringToFront();
 
 			InitializeFpsData();
-
 			for (;;)
 			{
 				Input.Instance.Update();
@@ -493,6 +492,11 @@ namespace BizHawk.Client.EmuHawk
 				if (GlobalWin.Tools.Has<LuaConsole>() && !SuppressLua)
 				{
 					GlobalWin.Tools.LuaConsole.ResumeScripts(false);
+				}
+
+				if (GlobalWin.Tools.Has<PythonConsole>())
+				{
+					GlobalWin.Tools.PythonConsole.ResumeScripts();
 				}
 
 				StepRunLoop_Core();

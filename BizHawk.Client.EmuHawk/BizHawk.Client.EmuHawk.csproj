@@ -1100,6 +1100,7 @@
     </Compile>
     <Compile Include="tools\Python\PythonFile.cs" />
     <Compile Include="tools\Python\PythonFiles.cs" />
+    <Compile Include="tools\Python\PythonThread.cs" />
     <Compile Include="tools\SMS\VDPViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1910,6 +1911,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="tools\Python\bizhawk\client.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\Python\bizhawk\emu.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="tools\Python\bizhawk\events.py">

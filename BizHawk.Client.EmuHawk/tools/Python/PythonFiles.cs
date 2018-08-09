@@ -8,6 +8,5 @@ namespace BizHawk.Client.EmuHawk
 {
 	class PythonFiles : List<PythonFile>
 	{
-		
 	}
 }

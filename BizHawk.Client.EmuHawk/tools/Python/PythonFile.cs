@@ -27,7 +27,6 @@ namespace BizHawk.Client.EmuHawk
 		public string Path { get; }
 		public bool Enabled => State != RunState.Disabled;
 		public bool Paused => State == RunState.Paused;
-		//public NLua.Lua Thread { get; set; }
 		public bool FrameWaiting { get; set; }
 		public string CurrentDirectory { get; set; }
 
@@ -41,8 +40,6 @@ namespace BizHawk.Client.EmuHawk
 		public void Stop()
 		{
 			State = RunState.Disabled;
-			//Thread.GetTable("keepalives")[Thread] = null;
-			//Thread = null;
 		}
 
 		public void Toggle()

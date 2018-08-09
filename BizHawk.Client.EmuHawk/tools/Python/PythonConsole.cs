@@ -25,6 +25,8 @@ namespace BizHawk.Client.EmuHawk
 
 		private PythonFiles pythonFiles = new PythonFiles();
 
+		private readonly Dictionary<PythonFile, PythonThread> runningThreads = new Dictionary<PythonFile, PythonThread>();
+
 		private dynamic pyBridge;
 
 		private dynamic pyEvents;
@@ -36,8 +38,6 @@ namespace BizHawk.Client.EmuHawk
 		{
 			InitializeComponent();
 
-			PythonBridge.Emulator = Emulator;
-			PythonBridge.VideoProvider = VideoProvider;
 			PythonBridge.LogEvent += ConsoleLog;
 
 			string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -45,6 +45,7 @@ namespace BizHawk.Client.EmuHawk
 			Environment.SetEnvironmentVariable("PYTHONHOME", envPythonHome, EnvironmentVariableTarget.Process);
 			Environment.SetEnvironmentVariable("PATH", envPythonHome, EnvironmentVariableTarget.Process);
 			PythonEngine.Initialize();
+			PythonEngine.BeginAllowThreads();
 
 			using (Py.GIL())
 			{
@@ -100,22 +101,30 @@ namespace BizHawk.Client.EmuHawk
 
 		public void FastUpdate()
 		{
-			pyEvents.on_fast_update.fire();
+			//pyEvents.on_fast_update.fire();
 		}
 
 		public void NewUpdate(ToolFormUpdateType type)
 		{
-			pyEvents.on_update.fire(type);
+			//pyEvents.on_update.fire(type);
 		}
 
 		public void Restart()
 		{
-			pyEvents.on_restart.fire();
+			//pyEvents.on_restart.fire();
 		}
 
 		public void UpdateValues()
 		{
-			pyEvents.on_update_values.fire();
+			//pyEvents.on_update_values.fire();
+		}
+
+		public void ResumeScripts()
+		{
+			foreach (var thread in runningThreads)
+			{
+				thread.Value.Resume();
+			}
 		}
 
 		private void ConsoleLog(PyString message)
@@ -125,9 +134,14 @@ namespace BizHawk.Client.EmuHawk
 
 		private void ConsoleLog(string message)
 		{
-			OutputBox.Text += message + Environment.NewLine;
-			OutputBox.SelectionStart = OutputBox.Text.Length;
-			OutputBox.ScrollToCaret();
+			if (OutputBox.IsHandleCreated) {
+				OutputBox.BeginInvoke((Action)delegate
+				{
+					OutputBox.Text += message + Environment.NewLine;
+					OutputBox.SelectionStart = OutputBox.Text.Length;
+					OutputBox.ScrollToCaret();
+				});
+			}
 		}
 
 		private void InputBox_KeyDown(object sender, KeyEventArgs e)
@@ -228,34 +242,30 @@ namespace BizHawk.Client.EmuHawk
 			var pythonFile = new PythonFile("", processedPath);
 
 			pythonFiles.Add(pythonFile);
-			PythonListView.ItemCount = pythonFiles.Count;
-			PythonListView.Refresh();
+			UpdateViews();
 			Global.Config.RecentLua.Add(processedPath);
 
 			pythonFile.State = PythonFile.RunState.Running;
 			EnablePythonFile(pythonFile);
 		}
 
+		private void UpdateViews()
+		{
+			PythonListView.ItemCount = pythonFiles.Count;
+			PythonListView.Refresh();
+		}
 
 		private void EnablePythonFile(PythonFile item)
 		{
+			PythonBridge.Emulator = Emulator;
+			PythonBridge.VideoProvider = VideoProvider;
+
 			try
 			{
-				//LuaSandbox.Sandbox(null, () =>
-				//{
-				//	string pathToLoad = Path.IsPathRooted(item.Path)
-				//	? item.Path
-				//	: PathManager.MakeProgramRelativePath(item.Path);
+				string pythonCode = File.ReadAllText(item.Path);
+				var newThread = new PythonThread(pythonCode);
+				runningThreads[item] = newThread;
 
-				//	item.Thread = LuaImp.SpawnCoroutine(pathToLoad);
-				//	LuaSandbox.CreateSandbox(item.Thread, Path.GetDirectoryName(pathToLoad));
-				//}, () =>
-				//{
-				//	item.State = LuaFile.RunState.Disabled;
-				//});
-
-				//// Shenanigans
-				//// We want any gui.text messages from a script to immediately update even when paused
 				//GlobalWin.OSD.ClearGUIText();
 				//GlobalWin.Tools.UpdateToolsAfter();
 				//LuaImp.EndLuaDrawing();
@@ -286,6 +296,34 @@ namespace BizHawk.Client.EmuHawk
 				LoadPythonFile(file.FullName);
 				//UpdateDialog();
 			}
+		}
+
+		private IEnumerable<PythonFile> SelectedItems
+		{
+			get { return PythonListView.SelectedIndices().Select(index => pythonFiles[index]); }
+		}
+
+		private IEnumerable<PythonFile> SelectedFiles
+		{
+			get;
+		}
+
+		private void RemoveScriptMenuItem_Click(object sender, EventArgs e)
+		{
+			var items = SelectedItems.ToList();
+			if (items.Any())
+			{
+				foreach (var item in items)
+				{
+					var thread = runningThreads[item];
+					thread.Abort();
+
+					runningThreads.Remove(item);
+					pythonFiles.Remove(item);
+				}
+			}
+
+			UpdateViews();
 		}
 	}
 }
