@@ -16,6 +16,7 @@ namespace BizHawk.Client.EmuHawk
 		readonly object _return_locker = new object();
 		private bool _resume = false;
 		private bool _return = false;
+		private bool _aborted = false;
 
 		public PythonThread(string pythonCode)
 		{
@@ -35,9 +36,16 @@ namespace BizHawk.Client.EmuHawk
 					pyEmu.thread = this.ToPython();
 					PythonEngine.Exec(pythonCode);
 				}
-				catch (ThreadAbortException)
+				catch (ThreadAbortException e)
 				{
+					lock (_return_locker)
+					{
+						_return = true;
+						_aborted = true;
+						Monitor.Pulse(_return_locker);
+					}
 					// Hopefully we called abort as part of a remove
+					PythonBridge.ConsoleLog(e.Message);
 				}
 				catch (Exception e)
 				{
@@ -70,6 +78,11 @@ namespace BizHawk.Client.EmuHawk
 
 		public void Resume()
 		{
+			if (_aborted)
+			{
+				return;
+			}
+
 			lock (_resume_locker)
 			{
 				_resume = true;
@@ -79,7 +92,7 @@ namespace BizHawk.Client.EmuHawk
 
 			lock (_return_locker)
 			{
-				while (!_return)
+				while (!_return && !_aborted)
 				{
 					Monitor.Wait(_return_locker);
 				}
