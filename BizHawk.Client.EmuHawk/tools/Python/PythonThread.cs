@@ -49,6 +49,12 @@ namespace BizHawk.Client.EmuHawk
 				}
 				catch (Exception e)
 				{
+					lock (_return_locker)
+					{
+						_return = true;
+						_aborted = true;
+						Monitor.Pulse(_return_locker);
+					}
 					PythonBridge.ConsoleLog(e.Message);
 				}
 			}
@@ -78,11 +84,6 @@ namespace BizHawk.Client.EmuHawk
 
 		public void Resume()
 		{
-			if (_aborted)
-			{
-				return;
-			}
-
 			lock (_resume_locker)
 			{
 				_resume = true;

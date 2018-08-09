@@ -1922,6 +1922,9 @@
     <Content Include="tools\Python\bizhawk\gui.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="tools\Python\bizhawk\utils.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="tools\Python\bizhawk\__init__.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
