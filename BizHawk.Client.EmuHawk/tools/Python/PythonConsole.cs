@@ -265,11 +265,6 @@ namespace BizHawk.Client.EmuHawk
 				string pythonCode = File.ReadAllText(item.Path);
 				var newThread = new PythonThread(pythonCode);
 				runningThreads[item] = newThread;
-
-				//GlobalWin.OSD.ClearGUIText();
-				//GlobalWin.Tools.UpdateToolsAfter();
-				//LuaImp.EndLuaDrawing();
-				//LuaImp.StartLuaDrawing();
 			}
 			catch (IOException)
 			{
@@ -305,7 +300,78 @@ namespace BizHawk.Client.EmuHawk
 
 		private IEnumerable<PythonFile> SelectedFiles
 		{
-			get;
+			get { return SelectedItems; }
+		}
+
+		private readonly List<FileSystemWatcher> _watches = new List<FileSystemWatcher>();
+
+		private void AddFileWatches()
+		{
+			_watches.Clear();
+			foreach (var item in pythonFiles)
+			{
+				var processedPath = PathManager.TryMakeRelative(item.Path);
+				string pathToLoad = ProcessPath(processedPath);
+
+				CreateFileWatcher(pathToLoad);
+			}
+		}
+
+		private void CreateFileWatcher(string path)
+		{
+			var watcher = new FileSystemWatcher
+			{
+				Path = Path.GetDirectoryName(path),
+				Filter = Path.GetFileName(path),
+				NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+							 | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+				EnableRaisingEvents = true,
+			};
+
+			// TODO, Deleted and Renamed events
+			watcher.Changed += OnChanged;
+
+			_watches.Add(watcher);
+		}
+
+		private void OnChanged(object source, FileSystemEventArgs e)
+		{
+			string message = "File: " + e.FullPath + " " + e.ChangeType;
+			Invoke(new MethodInvoker(delegate
+			{
+				RefreshScriptMenuItem_Click(null, null);
+			}));
+		}
+
+		private void RefreshScriptMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleScriptMenuItem_Click(sender, e);
+			ToggleScriptMenuItem_Click(sender, e);
+		}
+
+		private void ToggleScriptMenuItem_Click(object sender, EventArgs e)
+		{
+			var files = !SelectedFiles.Any() && Global.Config.ToggleAllIfNoneSelected ? pythonFiles : SelectedFiles;
+			foreach (var file in files)
+			{
+				file.Toggle();
+
+				if (file.Enabled)
+				{
+					EnablePythonFile(file);
+				}
+
+				else if (!file.Enabled)
+				{
+					file.Stop();
+					var thread = runningThreads[file];
+					thread.Abort();
+
+					runningThreads.Remove(file);
+				}
+			}
+
+			UpdateViews();
 		}
 
 		private void RemoveScriptMenuItem_Click(object sender, EventArgs e)

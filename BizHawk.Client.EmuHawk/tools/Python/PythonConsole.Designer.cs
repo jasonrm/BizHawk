@@ -32,6 +32,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RemoveScriptMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pythonToolStrip = new ToolStripEx();
@@ -42,8 +43,13 @@
             this.InputBox = new System.Windows.Forms.TextBox();
             this.OutputBox = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.RemoveScriptMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.pythonConsoleMenu.SuspendLayout();
+            this.pythonToolStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -76,7 +82,8 @@
             // 
             this.scriptToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openScriptToolStripMenuItem,
-            this.RemoveScriptMenuItem});
+            this.RemoveScriptMenuItem,
+            this.refreshToolStripMenuItem});
             this.scriptToolStripMenuItem.Name = "scriptToolStripMenuItem";
             this.scriptToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
             this.scriptToolStripMenuItem.Text = "Script";
@@ -85,9 +92,19 @@
             // 
             this.openScriptToolStripMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.OpenFile;
             this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.openScriptToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(255, 30);
             this.openScriptToolStripMenuItem.Text = "&Open Script";
             this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
+            // 
+            // RemoveScriptMenuItem
+            // 
+            this.RemoveScriptMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Delete;
+            this.RemoveScriptMenuItem.Name = "RemoveScriptMenuItem";
+            this.RemoveScriptMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.RemoveScriptMenuItem.Size = new System.Drawing.Size(255, 30);
+            this.RemoveScriptMenuItem.Text = "&Remove Script";
+            this.RemoveScriptMenuItem.Click += new System.EventHandler(this.RemoveScriptMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -105,9 +122,14 @@
             // 
             this.pythonToolStrip.ClickThrough = true;
             this.pythonToolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.pythonToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.toolStripButton4,
+            this.toolStripButton3});
             this.pythonToolStrip.Location = new System.Drawing.Point(0, 33);
             this.pythonToolStrip.Name = "pythonToolStrip";
-            this.pythonToolStrip.Size = new System.Drawing.Size(876, 25);
+            this.pythonToolStrip.Size = new System.Drawing.Size(876, 31);
             this.pythonToolStrip.TabIndex = 1;
             this.pythonToolStrip.Text = "toolStripEx1";
             // 
@@ -200,13 +222,53 @@
             this.splitContainer1.SplitterDistance = 284;
             this.splitContainer1.TabIndex = 4;
             // 
-            // RemoveScriptMenuItem
+            // refreshToolStripMenuItem
             // 
-            this.RemoveScriptMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Delete;
-            this.RemoveScriptMenuItem.Name = "RemoveScriptMenuItem";
-            this.RemoveScriptMenuItem.Size = new System.Drawing.Size(252, 30);
-            this.RemoveScriptMenuItem.Text = "&Remove Script";
-            this.RemoveScriptMenuItem.Click += new System.EventHandler(this.RemoveScriptMenuItem_Click);
+            this.refreshToolStripMenuItem.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Refresh1;
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(255, 30);
+            this.refreshToolStripMenuItem.Text = "Re&fresh";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.OpenFile;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Refresh1;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.RefreshScriptMenuItem_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.Delete;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Click += new System.EventHandler(this.RemoveScriptMenuItem_Click);
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.Image = global::BizHawk.Client.EmuHawk.Properties.Resources.checkbox;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton4.Text = "toolStripButton4";
+            this.toolStripButton4.Click += new System.EventHandler(this.ToggleScriptMenuItem_Click);
             // 
             // PythonConsole
             // 
@@ -221,6 +283,8 @@
             this.Text = "Python Console";
             this.pythonConsoleMenu.ResumeLayout(false);
             this.pythonConsoleMenu.PerformLayout();
+            this.pythonToolStrip.ResumeLayout(false);
+            this.pythonToolStrip.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -249,5 +313,10 @@
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem RemoveScriptMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton toolStripButton1;
+		private System.Windows.Forms.ToolStripButton toolStripButton2;
+		private System.Windows.Forms.ToolStripButton toolStripButton3;
+		private System.Windows.Forms.ToolStripButton toolStripButton4;
 	}
 }

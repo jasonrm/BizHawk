@@ -3,7 +3,7 @@
 thread = None
 
 def frame_count():
-	return PythonBridge.Emulator.Frame
+    return PythonBridge.Emulator.Frame
 
 def frame_advance():
-	thread.Yield()
+    thread.Yield()
