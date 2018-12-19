@@ -27,13 +27,14 @@ class ApplicationConsoleOutput(object):
     def close(self):
         pass
 
+
 def wire_console():
     sys.stdout = sys.stderr = PythonConsoleOutput()
 
 repl_globals = {}
 repl_locals = {}
 
-# https://stackoverflow.com/a/38615712
+# via: https://stackoverflow.com/a/38615712
 def eval_from_input(code):
     ast_ = ast.parse(code, '<code>', 'exec')
     final_expr = None
