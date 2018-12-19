@@ -22,5 +22,11 @@ namespace BizHawk.Client.EmuHawk
 		{
 			LogEvent?.Invoke(message);
 		}
+
+		public static void YieldCurrentThread()
+		{
+			int threadId = Thread.CurrentThread.ManagedThreadId;
+			GlobalWin.Tools.PythonConsole.YieldThread(threadId);
+		}
 	}
 }

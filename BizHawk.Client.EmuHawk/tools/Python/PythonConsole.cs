@@ -27,6 +27,19 @@ namespace BizHawk.Client.EmuHawk
 
 		private readonly Dictionary<PythonFile, PythonThread> runningThreads = new Dictionary<PythonFile, PythonThread>();
 
+		internal void YieldThread(int threadId)
+		{
+			// FIXME: This is ugly
+			foreach (var thread in runningThreads)
+			{
+				if (thread.Value.IsManagedThreadId(threadId))
+				{
+					thread.Value.Yield();
+					return;
+				}
+			}
+		}
+
 		private dynamic pyBridge;
 
 		private dynamic pyEvents;
@@ -381,9 +394,11 @@ namespace BizHawk.Client.EmuHawk
 			{
 				foreach (var item in items)
 				{
-					var thread = runningThreads[item];
-					thread.Abort();
-
+					if (runningThreads.ContainsKey(item))
+					{
+						var thread = runningThreads[item];
+						thread.Abort();
+					}
 					runningThreads.Remove(item);
 					pythonFiles.Remove(item);
 				}
