@@ -165,7 +165,7 @@ namespace BizHawk.Client.EmuHawk
 			if (OutputBox.IsHandleCreated) {
 				OutputBox.BeginInvoke((Action)delegate
 				{
-					OutputBox.Text += message + Environment.NewLine;
+					OutputBox.Text += message;
 					OutputBox.SelectionStart = OutputBox.Text.Length;
 					OutputBox.ScrollToCaret();
 				});
