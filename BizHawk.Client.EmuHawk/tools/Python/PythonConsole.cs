@@ -60,6 +60,11 @@ namespace BizHawk.Client.EmuHawk
 			PythonEngine.Initialize();
 			PythonEngine.BeginAllowThreads();
 
+			Closing += (o, e) =>
+			{
+				ClosePython();
+			};
+
 			using (Py.GIL())
 			{
 				dynamic sys = Py.Import("sys");
@@ -81,6 +86,16 @@ namespace BizHawk.Client.EmuHawk
 			//PythonListView.QueryItemIndent += PythonListView_QueryItemIndent;
 			PythonListView.VirtualMode = true;
 
+		}
+
+		public void ClosePython()
+		{
+			foreach (var thread in runningThreads)
+			{
+				thread.Value.Abort();
+			}
+			PythonEngine.AcquireLock();
+			PythonEngine.Shutdown();
 		}
 
 		private void PythonListView_QueryItemText(int index, int column, out string text)
