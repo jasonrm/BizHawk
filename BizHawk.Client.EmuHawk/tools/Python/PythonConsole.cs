@@ -291,7 +291,7 @@ namespace BizHawk.Client.EmuHawk
 			try
 			{
 				string pythonCode = File.ReadAllText(item.Path);
-				var newThread = new PythonThread(pythonCode);
+				var newThread = new PythonThread(item.Path, pythonCode);
 				runningThreads[item] = newThread;
 			}
 			catch (IOException)
@@ -421,5 +421,6 @@ namespace BizHawk.Client.EmuHawk
 
 			UpdateViews();
 		}
+
 	}
 }
