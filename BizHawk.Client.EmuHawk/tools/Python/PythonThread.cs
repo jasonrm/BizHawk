@@ -15,16 +15,16 @@ namespace BizHawk.Client.EmuHawk
 		private bool _return = false;
 		private bool _aborted = false;
 
-		public PythonThread(string pythonCode)
+		public PythonThread(string fileName, string pythonCode)
 		{
-			thread = new Thread(() => Run(pythonCode))
+			thread = new Thread(() => Run(fileName, pythonCode))
 			{
 				IsBackground = true
 			};
 			thread.Start();
 		}
 
-		public void Run(string pythonCode)
+		public void Run(string fileName, string pythonCode)
 		{
 			_return = false;
 			_aborted = false;
@@ -33,12 +33,14 @@ namespace BizHawk.Client.EmuHawk
 			{
 				using (Py.GIL())
 				{
-					PythonEngine.Exec(pythonCode);
+					var scope = Py.CreateScope();
+					scope.Set("__file__", new PyString(fileName));
+					scope.Exec(pythonCode);
 				}
 			}
 			catch (Exception e)
 			{
-				PythonBridge.ConsoleLog(e.Message);
+				PythonBridge.ConsoleLog("Exception: " + e.Message + Environment.NewLine);
 			} finally
 			{
 				lock (_return_locker)
