@@ -272,7 +272,6 @@ namespace BizHawk.Client.EmuHawk
 			pythonFiles.Add(pythonFile);
 			UpdateViews();
 
-			pythonFile.State = PythonFile.RunState.Running;
 			EnablePythonFile(pythonFile);
 		}
 
@@ -284,6 +283,7 @@ namespace BizHawk.Client.EmuHawk
 
 		private void EnablePythonFile(PythonFile item)
 		{
+			item.State = PythonFile.RunState.Running;
 			PythonBridge.Emulator = Emulator;
 			PythonBridge.VideoProvider = VideoProvider;
 
