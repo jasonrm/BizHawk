@@ -12,6 +12,7 @@ using Python.Runtime;
 using System.IO;
 using BizHawk.Client.Common;
 using BizHawk.Client.EmuHawk.WinFormExtensions;
+using Microsoft.Win32;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -54,7 +55,7 @@ namespace BizHawk.Client.EmuHawk
 			PythonBridge.LogEvent += ConsoleLog;
 
 			string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			string envPythonHome = baseDirectory + @"python-3.6.6-embed-amd64";
+			string envPythonHome = GetPythonExecutablePath();
 			Environment.SetEnvironmentVariable("PYTHONHOME", envPythonHome, EnvironmentVariableTarget.Process);
 			Environment.SetEnvironmentVariable("PATH", envPythonHome, EnvironmentVariableTarget.Process);
 			PythonEngine.Initialize();
@@ -69,7 +70,10 @@ namespace BizHawk.Client.EmuHawk
 			{
 				dynamic sys = Py.Import("sys");
 				// Location of bizhawk.* python modules
-				sys.path.append(new PyString(baseDirectory + @"tools\Python"));
+				sys.path.append(new PyString(baseDirectory + @"tools\\Python"));
+
+				// Location of included packages
+				sys.path.append(new PyString(baseDirectory + @"site-packages"));
 
 				// Location of any user-created python modules
 				sys.path.append(new PyString(PathManager.GetPythonPath()));
@@ -422,5 +426,11 @@ namespace BizHawk.Client.EmuHawk
 			UpdateViews();
 		}
 
+		// via: https://stackoverflow.com/a/43229470
+		static string GetPythonExecutablePath(int major = 3)
+		{
+			RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Python\\PythonCore\\3.6\\InstallPath");
+			return (string) key.GetValue(null);
+		}
 	}
 }
