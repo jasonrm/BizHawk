@@ -271,7 +271,6 @@ namespace BizHawk.Client.EmuHawk
 
 			pythonFiles.Add(pythonFile);
 			UpdateViews();
-			Global.Config.RecentLua.Add(processedPath);
 
 			pythonFile.State = PythonFile.RunState.Running;
 			EnablePythonFile(pythonFile);
