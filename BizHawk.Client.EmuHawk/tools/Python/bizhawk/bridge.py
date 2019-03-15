@@ -28,6 +28,11 @@ class ApplicationConsoleOutput(object):
         pass
 
 
+def enable_debug():
+	import ptvsd
+	ptvsd.enable_attach(address=('127.0.0.1', 5678))
+
+
 def wire_console():
     sys.stdout = sys.stderr = PythonConsoleOutput()
 

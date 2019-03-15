@@ -76,6 +76,7 @@ namespace BizHawk.Client.EmuHawk
 
 				pyBridge = Py.Import("bizhawk.bridge");
 				pyBridge.wire_console();
+				pyBridge.enable_debug();
 
 				pyEvents = Py.Import("bizhawk.events");
 			}
