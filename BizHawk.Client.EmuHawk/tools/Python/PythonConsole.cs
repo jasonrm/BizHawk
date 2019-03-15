@@ -189,7 +189,7 @@ namespace BizHawk.Client.EmuHawk
 					{
 						PyObject result = pyBridge.eval_from_input(InputBox.Text);
 						if (result != null) {
-							ConsoleLog(result.ToString());
+							ConsoleLog(result.ToString().TrimEnd(Environment.NewLine.ToCharArray()) + "\n");
 						}
 					}
 					catch (Exception ex)
