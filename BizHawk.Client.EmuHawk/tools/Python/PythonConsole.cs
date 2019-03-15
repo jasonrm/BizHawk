@@ -422,7 +422,7 @@ namespace BizHawk.Client.EmuHawk
 		}
 
 		// via: https://stackoverflow.com/a/43229470
-		static string GetPythonExecutablePath(int major = 3)
+		static string GetPythonExecutablePath()
 		{
 			RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Python\\PythonCore\\3.6\\InstallPath");
 			return (string) key.GetValue(null);
