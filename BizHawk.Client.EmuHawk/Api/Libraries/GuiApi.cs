@@ -7,6 +7,7 @@ using System.IO;
 
 using BizHawk.Client.ApiHawk;
 using BizHawk.Emulation.Common;
+using System.Drawing.Drawing2D;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -324,6 +325,16 @@ namespace BizHawk.Client.EmuHawk
 				{
 					return;
 				}
+			}
+		}
+
+		public void DrawImage(Image image, int x, int y, CompositingMode compositingMode = CompositingMode.SourceCopy)
+		{
+			using (var g = GetGraphics())
+			{
+				g.CompositingMode = compositingMode;
+				g.DrawImage(image, x, y);
+				g.CompositingMode = _compositingMode;
 			}
 		}
 
